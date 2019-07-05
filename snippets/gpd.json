@@ -1,0 +1,43 @@
+{
+    "boilerplate":{
+        "prefix":"boiler",
+        "body":"//Todo//\n//End//\n\n//Backlog//\n    ${1}\n//End//\n\n//Closed//\n//End//",
+        "description": "Start boilerplate for the file"
+      },
+      "cost":{
+        "prefix": "cost",
+        "body": "$(${1:cost}) $0",
+        "description": "Add a cost"
+      },
+      "completion_time":{
+        "prefix": "completion",
+        "body": "~(${1:date}) $0",
+        "description": "When was this completed?"
+      },
+      "context":{
+        "prefix": "context",
+        "body": "@(${1:context}) $0",
+        "description": "Where/when must you do this?"
+      },
+      "note":{
+        "prefix": "note",
+        "body": "`(${0:note})",
+        "description": "ID of note."
+      },
+      "project":{
+        "prefix":"project",
+        "body": "#(${1:project}) $0",
+        "description": "What project is this attached to?"
+      },
+      "section_header":{
+        "prefix": "section",
+        "body":"//${1:Section}//\n$0\n//End//",
+        "description": "Add section."
+      },
+      "target":{
+        "prefix": "target",
+        "body": "!(${1:target}) $0",
+        "description": "When do you want to get this done?"
+      }
+    }
+  

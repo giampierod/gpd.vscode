@@ -1,0 +1,45 @@
+{  
+"license":"Apache 2.0",
+"description": "Core syntax highlighting grammar rules for gpd.atom",
+"scopeName": "source.gpd",
+"name": "GPD",
+"comment": "GPD productivity",
+"fileTypes": [
+  "gpd",
+  "GPD"
+],
+"foldingStartMarker":"^//(?!End)[\\w\\d\\s]*//",
+"foldingStopMarker": "^//End//",
+"patterns": [
+  {
+    "begin": "#\\(",
+    "end": "\\)",
+    "name": "entity.other.inherited-class"
+  },
+  {
+    "begin": "@\\(",
+    "end": "\\)",
+    "name": "support.class"
+  },
+  {
+    "begin": "!\\(",
+    "end": "\\)",
+    "name": "variable"
+  },
+  {
+    "begin":"~\\(",
+    "end":"\\)",
+    "name":"storage.type"
+  },
+  {
+    "begin":"\\$\\(",
+    "end":"\\)",
+    "name":"constant.numeric"
+  },
+  {
+    "begin":"\\`\\(",
+    "end":"\\)",
+    "name":"comment"
+  }
+]
+}
