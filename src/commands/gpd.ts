@@ -98,37 +98,6 @@ function copyTodoToSection(section: string, topBottom: TopBottom, prefix: string
     let copyDirective = [new SectionMoveDirective(section, prefix, topBottom)];
     copyTodoToSections(copyDirective, move);
 
-    // OLD CODE -- REMOVE AFTER FIRST CHECK IN
-    // let editor = vscode.window.activeTextEditor!;
-    // let pos = editor.selection.anchor;
-    // let line = editor.document.lineAt(pos);
-    // if (!isHeader(line.text)) {
-    //     let secPos = getSectionPosition(editor, section, topBottom === TopBottom.Bottom);
-    //     if (secPos) {
-    //         let offSet = editor.document.offsetAt(secPos!);
-    //         if (topBottom === TopBottom.Bottom) {
-    //             offSet = editor.document.offsetAt(secPos!) - 1;
-    //         }
-    //         let insertText = eolToString(editor.document.eol) + "  " + prefix + " " + line.text.trim();
-    //         editor.edit((edit) => {
-    //             edit.insert(editor.document.positionAt(offSet), insertText);
-    //             if (move) {
-    //                 edit.delete(line.rangeIncludingLineBreak);
-    //             }
-    //         });
-    //         let newPos = new vscode.Position(pos.line, 0);
-    //         if (editor.document.offsetAt(pos) > editor.document.offsetAt(secPos!)) {
-    //             newPos = new vscode.Position(pos.line + 1, 0);
-    //         }
-    //         let cursorSel = new vscode.Selection(newPos, newPos);
-    //         editor.selection = cursorSel;
-    //     } else {
-    //         vscode.window.showErrorMessage("Couldn't find section:" + section);
-    //     }
-    // } else {
-    //     vscode.window.showWarningMessage("Can't select a header or footer as a Todo item.");
-    // }
-
 }
 
 
