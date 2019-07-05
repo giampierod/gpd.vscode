@@ -7,8 +7,6 @@ const gpd_1 = require("./commands/gpd");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
-    let createNote = vscode.commands.registerTextEditorCommand('extension.createNote', gpd_1.createNoteCommand);
-    context.subscriptions.push(createNote);
     let newTodo = vscode.commands.registerCommand('extension.newTodo', gpd_1.newTodoCommand);
     context.subscriptions.push(newTodo);
     let selectTodo = vscode.commands.registerCommand("extension.selectTodo", gpd_1.selectTodoCommand);
@@ -17,6 +15,8 @@ function activate(context) {
     context.subscriptions.push(doneTodo);
     let doneTodoAndRepeat = vscode.commands.registerCommand("extension.doneTodoAndRepeat", gpd_1.doneTodoAndRepeatCommand);
     context.subscriptions.push(doneTodoAndRepeat);
+    let toggleNote = vscode.commands.registerCommand("extension.toggleNote", gpd_1.toggleNoteCommand);
+    context.subscriptions.push(toggleNote);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated

@@ -1,12 +1,18 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const moment = require("moment");
+const editor_1 = require("./../utils/editor");
 let dateFormat = "DD/MM/YY hh:mm";
-function createNoteCommand(editor, edit) {
-    vscode.window.showInformationMessage("Create Note");
-}
-exports.createNoteCommand = createNoteCommand;
+let noteHeaderPattern = /`\(([a-zA-Z0-9_\"\., ]*)\)/;
 function newTodoCommand() {
     addItemToSection("Backlog", "", TopBottom.Bottom);
 }
@@ -20,9 +26,18 @@ function doneTodoCommand() {
     moveTodoToSection("Closed", TopBottom.Top, closedTime);
 }
 exports.doneTodoCommand = doneTodoCommand;
-function showNoteCommand() {
+function toggleNoteCommand() {
+    let editor = vscode.window.activeTextEditor;
+    if (editor.document.languageId === "GPD") {
+        openNote();
+    }
+    else if (editor.document.languageId === "GPD_Note") {
+    }
+    else {
+        vscode.window.showErrorMessage("This is not a GPD or GPD_Note file.");
+    }
 }
-exports.showNoteCommand = showNoteCommand;
+exports.toggleNoteCommand = toggleNoteCommand;
 function doneTodoAndRepeatCommand() {
     let closedTime = `~(${moment().format(dateFormat)}) `;
     let copyToTodo = new SectionMoveDirective("Backlog", "", TopBottom.Bottom);
@@ -37,7 +52,7 @@ class SectionMoveDirective {
         this.prefix = prefix;
         this.topBottom = topBottom;
         let editor = vscode.window.activeTextEditor;
-        let secPos = getSectionPosition(editor, this.section, this.topBottom === TopBottom.Bottom);
+        let secPos = getSectionPosition(this.section, this.topBottom === TopBottom.Bottom);
         if (secPos) {
             if (this.topBottom === TopBottom.Top) {
                 this.position = new vscode.Position(secPos.line + 1, 0);
@@ -54,6 +69,48 @@ class SectionMoveDirective {
     getPosition() {
         return this.position;
     }
+}
+function openNote() {
+    let editor = vscode.window.activeTextEditor;
+    let curPos = editor.selection.anchor;
+    let todo = editor.document.lineAt(curPos).text.trim();
+    if (!isHeader(todo)) {
+        let noteText = getNoteText(todo);
+        if (noteText) {
+            let todoMin = todo.replace(noteText.notefull, "").trim();
+            openNoteFile().then((noteEditor) => {
+                let notePos = noteEditor.getSectionPosition(noteText.noteinner, true);
+                if (notePos) {
+                    noteEditor.moveCursor(notePos);
+                }
+                else {
+                    console.log("Didn't find the note: " + noteText.noteinner);
+                }
+            }).catch(() => { vscode.window.showErrorMessage("Couldn't get an editor for the note"); });
+        }
+        else {
+            // Create a new note
+        }
+    }
+    else {
+        vscode.window.showErrorMessage("Can't open note for a header.");
+    }
+}
+function getNoteText(text) {
+    let noteText = noteHeaderPattern.exec(text);
+    if (noteText) {
+        return { notefull: noteText[0], noteinner: noteText[1] };
+    }
+    else {
+        return undefined;
+    }
+}
+function openNoteFile() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let editor = vscode.window.activeTextEditor;
+        let filename = editor.document.uri + "_note";
+        return new editor_1.Editor(yield vscode.window.showTextDocument(vscode.Uri.parse(filename)));
+    });
 }
 function copyTodoToSections(directives, deleteTodo) {
     let editor = vscode.window.activeTextEditor;
@@ -114,7 +171,7 @@ var TopBottom;
 })(TopBottom || (TopBottom = {}));
 function addItemToSection(section, text, topBottom) {
     let editor = vscode.window.activeTextEditor;
-    let secPos = getSectionPosition(editor, section, topBottom === TopBottom.Bottom);
+    let secPos = getSectionPosition(section, topBottom === TopBottom.Bottom);
     if (secPos) {
         let offSet = editor.document.offsetAt(secPos);
         if (topBottom === TopBottom.Bottom) {
@@ -140,9 +197,10 @@ function eolToString(eol) {
         return "\n";
     }
 }
-function getSectionPosition(editor, section, footer = false) {
+function getSectionPosition(section, footer = false) {
+    let editor = vscode.window.activeTextEditor;
     let headerRegex = new RegExp("//" + section + "//");
-    let secPos = search(editor, headerRegex);
+    let secPos = search(headerRegex);
     if (secPos) {
         var pos = secPos;
         if (footer) {
@@ -159,10 +217,12 @@ function getSectionPosition(editor, section, footer = false) {
 }
 function getEndOfSection(editor, pos) {
     let footerRegex = new RegExp("//End//");
-    let endOfSection = search(editor, footerRegex, pos);
+    let endOfSection = search(footerRegex, pos);
     return new vscode.Position(endOfSection.line, 0);
 }
-function search(editor, searchString, startPos) {
+function search(searchString, startPos) {
+    let editor = vscode.window.activeTextEditor;
+    console.log(editor.document.fileName);
     if (!startPos) {
         startPos = new vscode.Position(0, 0);
     }

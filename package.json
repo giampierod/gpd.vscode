@@ -10,7 +10,6 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.createNote",
 		"onCommand:extension.newTodo",
 		"onCommand:extension.selectTodo",
 		"onCommand:extension.doneTodo",
@@ -44,6 +43,11 @@
 				"language": "GPD",
 				"scopeName": "source.gpd",
 				"path": "./syntaxes/gpd.tmLanguage.json"
+			},
+			{
+				"language": "GPD_Note",
+				"scopeName": "source.gpd_note",
+				"path": "./syntaxes/gpd_note.tmLanguage.json"
 			}
 		],
 		"snippets": [
@@ -52,63 +56,59 @@
 				"path": "./snippets/gpd.json"
 			}
 		],
-		"commands": [
-			{
-				"command": "extension.createNote",
-				"title": "Create Note",
-				"enablement": "editorLangId == GPD | GPD_Note"
-			},
+		"commands": [			
 			{
 				"command": "extension.newTodo",
 				"title": "New Todo",
-				"enablement": "editorLangId == GPD | GPD_Note"
+				"enablement": "editorLangId == GPD"
 			},
 			{
 				"command": "extension.selectTodo",
 				"title": "Select Todo",
-				"enablement": "editorLangId == GPD | GPD_Note"
+				"enablement": "editorLangId == GPD"
 			},
 			{
 				"command": "extension.doneTodo",
 				"title": "Done Todo",
-				"enablement": "editorLangId == GPD | GPD_Note"
+				"enablement": "editorLangId == GPD"
 			},
 			{
 				"command": "extension.doneTodoAndRepeat",
 				"title": "Done Todo and Repeat",
-				"enablement": "editorLangId == GPD | GPD_Note"
+				"enablement": "editorLangId == GPD"
 			},
 			{
 				"command": "extension.toggleNote",
 				"title": "Toggle Note",
-				"enablement": "editorLangId == GPD | GPD_Note"
+				"enablement": "editorLangId == GPD"
 			}
+
 		],
 		"keybindings": [
 			{
 				"command": "extension.newTodo",
 				"key": "ctrl+shift+/",
-				"when": "editorLangId == GPD | GPD_Note"
+				"when": "editorLangId == GPD"
 			},
 			{
 				"command": "extension.selectTodo",
 				"key": "ctrl+shift+.",
-				"when": "editorLangId == GPD | GPD_Note"
+				"when": "editorLangId == GPD"
 			},
 			{
 				"command": "extension.doneTodo",
 				"key": "ctrl+shift+]",
-				"when": "editorLangId == GPD | GPD_Note"
+				"when": "editorLangId == GPD"
 			},
 			{
 				"command": "extension.doneTodoAndRepeat",
 				"key": "ctrl+shift+[",
-				"when": "editorLangId == GPD | GPD_Note"
+				"when": "editorLangId == GPD"
 			},
 			{
 				"command": "extension.toggleNote",
 				"key": "ctrl+shift+,",
-				"when": "editorLangId == GPD | GPD_Note"
+				"when": "editorLangId == GPD"
 			}
 
 		],
@@ -116,27 +116,23 @@
 			"commandPalette": [
 				{
 					"command": "extension.newTodo",
-					"when": "editorLangId == GPD | GPD_Note"
-				},
-				{
-					"command": "extension.createNote",
-					"when": "editorLangId == GPD | GPD_Note"
+					"when": "editorLangId == GPD"
 				},
 				{
 					"command": "extension.selectTodo",
-					"when": "editorLangId == GPD | GPD_Note"
+					"when": "editorLangId == GPD"
 				},
 				{
 					"command": "extension.doneTodo",
-					"when": "editorLangId == GPD | GPD_Note"
+					"when": "editorLangId == GPD"
 				},
 				{
 					"command": "extension.doneTodoAndRepeat",
-					"when": "editorLangId == GPD | GPD_Note"
+					"when": "editorLangId == GPD"
 				},
 				{
 					"command": "extension.toggleNote",
-					"when": "editorLangId == GPD | GPD_Note"
+					"when": "editorLangId == GPD"
 				}
 			]
 		}
