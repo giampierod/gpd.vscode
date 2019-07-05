@@ -18,8 +18,12 @@ export function selectTodoCommand() {
 }
 
 export function doneTodoCommand() {
-    let closedTime = `~(${moment().format(dateFormat)})`;
+    let closedTime = `~(${moment().format(dateFormat)}) `;
     moveTodoToSection("Closed", TopBottom.Top, closedTime);
+}
+
+export function toggleNoteCommand() {
+
 }
 
 export function doneTodoAndRepeatCommand() {
@@ -52,8 +56,6 @@ class SectionMoveDirective {
             vscode.window.showErrorMessage("Couldn't find section:" + this.section);
             this.position = undefined;
         }
-
-        console.log("Position of directive" + this.section + " " + this.topBottom.toString() +  " -- Line:" + this.position!.line + " Character:" + this.position!.character);
     }
     public getPosition(): vscode.Position | undefined {
         return this.position;
@@ -65,11 +67,12 @@ function copyTodoToSections(directives: SectionMoveDirective[], deleteTodo?: boo
     let editor = vscode.window.activeTextEditor!;
     let pos = editor.selection.anchor;
     let line = editor.document.lineAt(pos);
-    if (!isHeader(line.text)) {        
+    if (!isHeader(line.text)) {
+        let todo = removeTag(line.text, "~").trim();
         editor.edit((edit) => {            
             directives.forEach(directive => {
                 if(directive.getPosition()){
-                    let insertText =  "  " + directive.prefix + line.text.trim() + eolToString(editor.document.eol);
+                    let insertText =  "  " + directive.prefix + todo + eolToString(editor.document.eol);
                     edit.insert(directive.getPosition()!, insertText);
                 }                
             });
@@ -98,6 +101,15 @@ function copyTodoToSection(section: string, topBottom: TopBottom, prefix: string
     let copyDirective = [new SectionMoveDirective(section, prefix, topBottom)];
     copyTodoToSections(copyDirective, move);
 
+}
+
+function removeTag(text: string, tag: string): string {
+    let pattern = new RegExp(escapeRegexp(tag) + "\\(.*?\\)[ ]?", "g");
+    return text.replace(pattern, "");
+}
+
+function escapeRegexp(s: string): string {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
 

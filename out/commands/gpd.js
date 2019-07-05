@@ -16,10 +16,13 @@ function selectTodoCommand() {
 }
 exports.selectTodoCommand = selectTodoCommand;
 function doneTodoCommand() {
-    let closedTime = `~(${moment().format(dateFormat)})`;
+    let closedTime = `~(${moment().format(dateFormat)}) `;
     moveTodoToSection("Closed", TopBottom.Top, closedTime);
 }
 exports.doneTodoCommand = doneTodoCommand;
+function showNoteCommand() {
+}
+exports.showNoteCommand = showNoteCommand;
 function doneTodoAndRepeatCommand() {
     let closedTime = `~(${moment().format(dateFormat)}) `;
     let copyToTodo = new SectionMoveDirective("Backlog", "", TopBottom.Bottom);
@@ -47,7 +50,6 @@ class SectionMoveDirective {
             vscode.window.showErrorMessage("Couldn't find section:" + this.section);
             this.position = undefined;
         }
-        console.log("Position of directive" + this.section + " " + this.topBottom.toString() + " -- Line:" + this.position.line + " Character:" + this.position.character);
     }
     getPosition() {
         return this.position;
@@ -58,10 +60,11 @@ function copyTodoToSections(directives, deleteTodo) {
     let pos = editor.selection.anchor;
     let line = editor.document.lineAt(pos);
     if (!isHeader(line.text)) {
+        let todo = removeTag(line.text, "~").trim();
         editor.edit((edit) => {
             directives.forEach(directive => {
                 if (directive.getPosition()) {
-                    let insertText = "  " + directive.prefix + line.text.trim() + eolToString(editor.document.eol);
+                    let insertText = "  " + directive.prefix + todo + eolToString(editor.document.eol);
                     edit.insert(directive.getPosition(), insertText);
                 }
             });
@@ -89,6 +92,13 @@ function copyTodoToSections(directives, deleteTodo) {
 function copyTodoToSection(section, topBottom, prefix, move) {
     let copyDirective = [new SectionMoveDirective(section, prefix, topBottom)];
     copyTodoToSections(copyDirective, move);
+}
+function removeTag(text, tag) {
+    let pattern = new RegExp(escapeRegexp(tag) + "\\(.*?\\)[ ]?", "g");
+    return text.replace(pattern, "");
+}
+function escapeRegexp(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 function moveTodoToSection(section, topBottom, prefix) {
     copyTodoToSection(section, topBottom, prefix, true);
