@@ -73,23 +73,22 @@ class SectionMoveDirective {
 function openNote() {
     let editor = vscode.window.activeTextEditor;
     let curPos = editor.selection.anchor;
+    let todoLine = editor.document.lineAt(curPos);
     let todo = editor.document.lineAt(curPos).text.trim();
     if (!isHeader(todo)) {
         let noteText = getNoteText(todo);
         if (noteText) {
             let todoMin = todo.replace(noteText.notefull, "").trim();
-            openNoteFile().then((noteEditor) => {
-                let notePos = noteEditor.getSectionPosition(noteText.noteinner, true);
-                if (notePos) {
-                    noteEditor.moveCursor(notePos);
-                }
-                else {
-                    console.log("Didn't find the note: " + noteText.noteinner);
-                }
-            }).catch(() => { vscode.window.showErrorMessage("Couldn't get an editor for the note"); });
+            openOrCreateNote(noteText.noteinner);
         }
         else {
-            // Create a new note
+            let notePos = todoLine.range.end;
+            let noteId = moment().format("YYYY.MM.DD.hh.mm");
+            let noteInsert = " `(" + noteId + ")";
+            editor.edit((edit) => {
+                edit.insert(notePos, noteInsert);
+            });
+            openOrCreateNote(noteId);
         }
     }
     else {
@@ -104,6 +103,25 @@ function getNoteText(text) {
     else {
         return undefined;
     }
+}
+function openOrCreateNote(noteId) {
+    openNoteFile().then((noteEditor) => {
+        let notePos = noteEditor.getSectionPosition(noteId, true);
+        if (notePos) {
+            noteEditor.moveCursor(notePos);
+        }
+        else {
+            noteEditor.vseditor.edit((edit) => {
+                let pos = new vscode.Position(0, 0);
+                edit.insert(pos, `//${noteId}//
+  
+//End//
+
+`);
+            });
+            noteEditor.moveCursor(new vscode.Position(1, 2));
+        }
+    }).catch(() => { vscode.window.showErrorMessage("Couldn't get an editor for the note file."); });
 }
 function openNoteFile() {
     return __awaiter(this, void 0, void 0, function* () {

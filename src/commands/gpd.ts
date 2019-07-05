@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as moment from "moment";
 import { Editor } from "./../utils/editor";
+import { networkInterfaces } from "os";
 
 let dateFormat = "DD/MM/YY hh:mm";
 let noteHeaderPattern = /`\(([a-zA-Z0-9_\"\., ]*)\)/;
@@ -73,31 +74,27 @@ class SectionMoveDirective {
 function openNote() {
     let editor = vscode.window.activeTextEditor!;
     let curPos = editor.selection.anchor;
+    let todoLine = editor.document.lineAt(curPos);
     let todo = editor.document.lineAt(curPos).text.trim();
     if (!isHeader(todo)) {
         let noteText = getNoteText(todo);
         if (noteText) {
             let todoMin = todo.replace(noteText.notefull, "").trim();
-            openNoteFile().then((noteEditor) => {
-                
-                let notePos = noteEditor.getSectionPosition(noteText!.noteinner, true);
-                
-                if (notePos) {
-                    noteEditor.moveCursor(notePos!);
-                } else {
-                    console.log("Didn't find the note: " + noteText!.noteinner);
-                }
-            }).catch(() => { vscode.window.showErrorMessage("Couldn't get an editor for the note"); });
+            openOrCreateNote(noteText!.noteinner);
+           
         } else {
-            // Create a new note
+            let notePos = todoLine.range.end;
+            let noteId = moment().format("YYYY.MM.DD.hh.mm");
+            let noteInsert = " `(" + noteId + ")";
+            editor.edit((edit) => {
+                edit.insert(notePos, noteInsert);                
+            });
+            openOrCreateNote(noteId);
+
         }
     } else {
         vscode.window.showErrorMessage("Can't open note for a header.");
     }
-
-
-
-
 }
 
 function getNoteText(text: string): { notefull: string, noteinner: string } | undefined {
@@ -108,6 +105,25 @@ function getNoteText(text: string): { notefull: string, noteinner: string } | un
         return undefined;
     }
 
+}
+
+function openOrCreateNote(noteId: string){
+    openNoteFile().then((noteEditor) => {                
+        let notePos = noteEditor.getSectionPosition(noteId, true);                
+        if (notePos) {
+            noteEditor.moveCursor(notePos!);
+        } else {
+            noteEditor.vseditor.edit((edit) => {
+                let pos = new vscode.Position(0,0);
+                edit.insert(pos,`//${noteId}//
+  
+//End//
+
+`);
+            });
+            noteEditor.moveCursor(new vscode.Position(1, 2));
+        }
+    }).catch(() => { vscode.window.showErrorMessage("Couldn't get an editor for the note file."); });
 }
 
 async function openNoteFile(): Promise<Editor> {

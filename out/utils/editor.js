@@ -4,7 +4,6 @@ const vscode_1 = require("vscode");
 class Editor {
     constructor(textEditor) {
         this.vseditor = textEditor;
-        this.edit = textEditor.edit;
     }
     search(searchString, startPos) {
         if (!startPos) {
@@ -17,7 +16,6 @@ class Editor {
             return this.vseditor.document.positionAt(result.index + result[0].length + this.vseditor.document.offsetAt(startPos));
         }
         else {
-            vscode_1.window.showErrorMessage("Couldn't find search string" + searchString);
             return undefined;
         }
     }

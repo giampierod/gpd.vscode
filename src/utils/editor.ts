@@ -2,12 +2,8 @@ import { TextEditor, Position, window, Range, Selection, TextEditorRevealType } 
 
 export class Editor {
     readonly vseditor: TextEditor; 
-    readonly edit: Function;
-    
-    
     constructor(textEditor: TextEditor) {
-        this.vseditor = textEditor;
-        this.edit = textEditor.edit;
+        this.vseditor = textEditor;    
     }
 
     public search(searchString: RegExp, startPos?: Position): Position | undefined {        
@@ -19,8 +15,7 @@ export class Editor {
         let result = searchString.exec(text);
         if (result) {
             return this.vseditor.document.positionAt(result.index + result[0].length + this.vseditor.document.offsetAt(startPos));
-        } else {
-            window.showErrorMessage("Couldn't find search string" + searchString);
+        } else {            
             return undefined;
     
         }
