@@ -3,6 +3,11 @@
 	"displayName": "gpd",
 	"description": "Getting Productivity Done",
 	"version": "0.0.1",
+	"publisher": "giampierod-gpd",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/giampierod/gpd.vscode"
+	},
 	"engines": {
 		"vscode": "^1.36.0"
 	},
