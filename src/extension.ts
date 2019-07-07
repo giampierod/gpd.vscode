@@ -21,8 +21,11 @@ function activate(context: vscode.ExtensionContext) {
 	let doneTodoAndRepeat = vscode.commands.registerCommand("extension.doneTodoAndRepeat", doneTodoAndRepeatCommand);
 	context.subscriptions.push(doneTodoAndRepeat);
 
-	let toggleNote = vscode.commands.registerCommand("extension.toggleNote", toggleNoteCommand);
-	context.subscriptions.push(toggleNote);
+	let openNote = vscode.commands.registerCommand("extension.openNote", toggleNoteCommand);
+	context.subscriptions.push(openNote);
+	
+	let openTodo = vscode.commands.registerCommand("extension.openTodo", toggleNoteCommand);
+	context.subscriptions.push(openTodo);
 }
 exports.activate = activate;
 

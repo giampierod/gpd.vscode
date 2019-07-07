@@ -14,7 +14,8 @@
 		"onCommand:extension.selectTodo",
 		"onCommand:extension.doneTodo",
 		"onCommand:extension.doneTodoAndRepeat",
-		"onCommand:extension.toggleNote"
+		"onCommand:extension.openNote",
+		"onCommand:extension.openTodo"
 		
 	],
 	"main": "./out/extension.js",
@@ -78,9 +79,14 @@
 				"enablement": "editorLangId == GPD"
 			},
 			{
-				"command": "extension.toggleNote",
+				"command": "extension.openNote",
 				"title": "Toggle Note",
 				"enablement": "editorLangId == GPD"
+			},
+			{
+				"command": "extension.openTodo",
+				"title": "Toggle Todo",
+				"enablement": "editorLangId == GPD_Note"
 			}
 
 		],
@@ -106,9 +112,14 @@
 				"when": "editorLangId == GPD"
 			},
 			{
-				"command": "extension.toggleNote",
+				"command": "extension.openNote",
 				"key": "ctrl+shift+,",
 				"when": "editorLangId == GPD"
+			},
+			{
+				"command": "extension.openTodo",
+				"key": "ctrl+shift+,",
+				"when": "editorLangId == GPD_Note"
 			}
 
 		],
@@ -131,8 +142,12 @@
 					"when": "editorLangId == GPD"
 				},
 				{
-					"command": "extension.toggleNote",
+					"command": "extension.openNote",
 					"when": "editorLangId == GPD"
+				},
+				{
+					"command": "extension.openTodo",				
+					"when": "editorLangId == GPD_Note"
 				}
 			]
 		}

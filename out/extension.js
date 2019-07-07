@@ -15,8 +15,10 @@ function activate(context) {
     context.subscriptions.push(doneTodo);
     let doneTodoAndRepeat = vscode.commands.registerCommand("extension.doneTodoAndRepeat", gpd_1.doneTodoAndRepeatCommand);
     context.subscriptions.push(doneTodoAndRepeat);
-    let toggleNote = vscode.commands.registerCommand("extension.toggleNote", gpd_1.toggleNoteCommand);
-    context.subscriptions.push(toggleNote);
+    let openNote = vscode.commands.registerCommand("extension.openNote", gpd_1.toggleNoteCommand);
+    context.subscriptions.push(openNote);
+    let openTodo = vscode.commands.registerCommand("extension.openTodo", gpd_1.toggleNoteCommand);
+    context.subscriptions.push(openTodo);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated
