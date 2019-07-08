@@ -2,6 +2,13 @@
 
 All notable changes to the "gpd" extension will be documented in this file.
 
+## [0.1.3] - 2019-07-07
+
+### Fixed
+
+- Publishing of files
+
+
 ## [0.1.2] - 2019-07-07
 
 ### Fixed
