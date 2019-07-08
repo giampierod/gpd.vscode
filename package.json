@@ -21,7 +21,6 @@
 		"onCommand:extension.doneTodoAndRepeat",
 		"onCommand:extension.openNote",
 		"onCommand:extension.openTodo"
-		
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -62,7 +61,7 @@
 				"path": "./snippets/gpd.json"
 			}
 		],
-		"commands": [			
+		"commands": [
 			{
 				"command": "extension.newTodo",
 				"title": "New Todo",
@@ -93,7 +92,6 @@
 				"title": "Toggle Todo",
 				"enablement": "editorLangId == GPD_Note"
 			}
-
 		],
 		"keybindings": [
 			{
@@ -126,7 +124,6 @@
 				"key": "ctrl+shift+,",
 				"when": "editorLangId == GPD_Note"
 			}
-
 		],
 		"menus": {
 			"commandPalette": [
@@ -151,7 +148,7 @@
 					"when": "editorLangId == GPD"
 				},
 				{
-					"command": "extension.openTodo",				
+					"command": "extension.openTodo",
 					"when": "editorLangId == GPD_Note"
 				}
 			]
