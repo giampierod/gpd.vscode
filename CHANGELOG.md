@@ -2,7 +2,11 @@
 
 All notable changes to the "gpd" extension will be documented in this file.
 
-## [Unreleased]
+## [0.1.2] - 2019-07-07
+
+### Fixed
+
+- Leveraging webpack instead of bundling all packages
 
 ## [0.1.1] - 2019-07-07
 
