@@ -99,9 +99,11 @@ function openOrCreateNote(noteId: string, todo: string){
 //End//
 
 `);
+            }).then(() => {
+                let notePos = new vscode.Position(2, 2);
+                noteEditor.moveCursor(notePos);
             });
-            let notePos = new vscode.Position(2, 2);
-            noteEditor.moveCursor(notePos);
+            
         }
         
     }).catch(() => { vscode.window.showErrorMessage("Couldn't get an editor for the note file."); });
