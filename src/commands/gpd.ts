@@ -12,7 +12,7 @@ export function newTodoCommand() {
 }
 
 export function selectTodoCommand() {
-    moveTodoToSection("Todo", TopBottom.Bottom, "");
+    moveTodoToSection("Todo", TopBottom.Top, "");
 }
 
 export function doneTodoCommand() {
