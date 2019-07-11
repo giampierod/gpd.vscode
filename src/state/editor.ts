@@ -164,7 +164,7 @@ export class Editor {
 
 
         this.vseditor.setDecorations(hidden, hiddenArray);
-//        this.vseditor.setDecorations(visble, visibleArray);
+        this.vseditor.setDecorations(visble, visibleArray);
 
         this.vseditor.revealRange(range);
 
