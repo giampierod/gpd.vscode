@@ -41,6 +41,11 @@ export function doneTodoAndRepeatCommand() {
 
 }
 
+export function showAllNotesCommand(){
+    let editor = new Editor(vscode.window.activeTextEditor!);
+    editor.unnarrow();
+}
+
 function openGpd() {
     let editor = vscode.window.activeTextEditor!;
     let filename = editor.document.uri.toString().replace(/_note/i,'');    

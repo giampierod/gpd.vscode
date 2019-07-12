@@ -2,6 +2,12 @@
 
 All notable changes to the "gpd" extension will be documented in this file.
 
+## [0.2.0] - 2019-07-12
+
+### Added
+
+- Selecting a note from the GPD file will highlight the note in the GPD_Note file and "dim" the other notes. To see all notes, switch away and switch back to the GPD_Note file. This is the first step in trying to replicate the Emacs feature "Narrow-to-region".
+
 ## [0.1.6] - 2019-07-08
 
 ### Fixed
@@ -25,7 +31,6 @@ All notable changes to the "gpd" extension will be documented in this file.
 ### Fixed
 
 - Publishing of files
-
 
 ## [0.1.2] - 2019-07-07
 

@@ -1,4 +1,4 @@
-import { TextEditor, Position, Range, Selection, TextEditorRevealType, window, DecorationOptions} from "vscode";
+import { TextEditor, Position, Range, Selection, TextEditorRevealType, window, DecorationOptions, commands} from "vscode";
 import { noteHeaderPattern, eolToString } from "./symbols";
 
 
@@ -100,7 +100,8 @@ export class Editor {
             let bottomOffset = this.vseditor.document.offsetAt(bottom);
             let curPos = this.vseditor.document.positionAt(bottomOffset - 1);
             this.vseditor.selection= new Selection(curPos, curPos);
-            this.narrow(new Range(curPos, curPos));
+            this.vseditor.revealRange(new Range(curPos, curPos));
+            this.narrow(new Range(top, bottom));
         }
         
     }
@@ -129,8 +130,8 @@ export class Editor {
 
     public narrow(range: Range) {
         let hidden = window.createTextEditorDecorationType({
-            opacity: '0'            
-          });
+            opacity: '0.1'            
+        });
 
         let visble = window.createTextEditorDecorationType({
             opacity: '1'
@@ -152,7 +153,7 @@ export class Editor {
         if(range.end.line !== this.getEof().line){
             let endOffset = this.vseditor.document.offsetAt(range.end);
             let afterRange = new Range(
-                this.vseditor.document.positionAt(endOffset + 1),
+                new Position(range.end.line + 1, 0),
                 this.getEof()
             );
             let hideEnd: DecorationOptions = {range: afterRange};
@@ -162,12 +163,27 @@ export class Editor {
         let showRange: DecorationOptions = {range};
         visibleArray.push(showRange);
 
-
         this.vseditor.setDecorations(hidden, hiddenArray);
         this.vseditor.setDecorations(visble, visibleArray);
 
         this.vseditor.revealRange(range);
 
+
+    }
+
+    public unnarrow(){
+        let visble = window.createTextEditorDecorationType({
+            opacity: '1'
+        });
+
+        let visibleArray: DecorationOptions[] = [];
+        let wholeDoc = new Range(new Position(0,0), this.getEof());
+        let showRange: DecorationOptions = {range: wholeDoc};
+        visibleArray.push(showRange);        
+        this.vseditor.setDecorations(visble, visibleArray);
+
+        commands.executeCommand("workbench.action.reloadWindow");
+        
 
     }
 
