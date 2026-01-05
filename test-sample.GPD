@@ -1,0 +1,16 @@
+//Todo//
+  Review pull request #(Code Review) @(GitHub) $(1h)
+  Fix login bug !(High Priority) $(2h)
+//End//
+
+//Backlog//
+  Update documentation #(Docs)
+  Add dark mode feature #(UI Enhancement) $(4h)
+  Refactor database queries #(Performance) $(3h)
+  Write unit tests for auth module #(Testing) $(2h)
+//End//
+
+//Closed//
+  ~(02/01/26 08:00) Setup development environment #(Setup) $(1h)
+  ~(01/01/26 15:30) Initial project structure #(Setup) $(30min)
+//End//

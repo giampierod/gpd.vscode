@@ -2,7 +2,7 @@
 	"name": "gpd",
 	"displayName": "gpd",
 	"description": "Getting Productivity Done",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"publisher": "giampierod-gpd",
 	"repository": {
 		"type": "git",

@@ -25,7 +25,7 @@ export function copyTodoToSections(directives: SectionMoveDirective[], deleteTod
         vseditor.edit((edit) => {
             directives.forEach(directive => {
                 if (directive.getPosition()) {
-                    let insertText = "  " + directive.prefix + todo + eolToString(vseditor.document.eol);
+                    let insertText = "    " + directive.prefix + todo + eolToString(vseditor.document.eol);
                     edit.insert(directive.getPosition()!, insertText);
                 }
             });
